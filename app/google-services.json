@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "238203516902",
+    "firebase_url": "https://ride-tracker-55af9.firebaseio.com",
+    "project_id": "ride-tracker-55af9",
+    "storage_bucket": "ride-tracker-55af9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238203516902:android:29d425111addedc7bb4827",
+        "android_client_info": {
+          "package_name": "com.twointerns.ridetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "238203516902-00uel8fghqkvdi2r6a7ne673n7bvnr47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABisSGwdgHRDoZUwNoW3iTi0QFHRCRHTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "238203516902-00uel8fghqkvdi2r6a7ne673n7bvnr47.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

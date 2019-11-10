@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RecoverFragment">
+
+
+    <data>
+        <variable
+            name="recover"
+            type="com.twointerns.ridetracker.viewmodel.RecoverViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:paddingBottom="20dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/logo_recover"
+                android:layout_width="280dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/biker_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+            <TextView
+                android:id="@+id/title_recover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@string/recover_account"
+                style="@style/RobotoBold_Blue_22"
+                app:layout_constraintEnd_toEndOf="@id/logo_recover"
+                app:layout_constraintStart_toStartOf="@id/logo_recover"
+                app:layout_constraintTop_toBottomOf="@id/logo_recover" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/email_wrap_recover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="22dp"
+                android:hint="@string/email"
+                android:paddingBottom="10dp"
+                android:textColorHint="@color/colorAccent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_recover">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/email_recover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/RobotoRegular_Blue_18"
+                    android:inputType="textEmailAddress"
+                    android:paddingBottom="10dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <Button
+                android:id="@+id/recover_button"
+                style="@style/RobotoRegular_Blue_18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/blue_stroke"
+                android:paddingStart="30dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="30dp"
+                android:paddingBottom="10dp"
+                android:text="@string/recover_account"
+                android:onClick="@{()-> recover.sendRecoverLink(emailRecover.getText().toString())}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/email_wrap_recover"
+                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintStart_toStartOf="@+id/email_wrap_recover"
+                app:layout_constraintTop_toBottomOf="@+id/email_wrap_recover"
+                app:layout_constraintVertical_bias="1.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>
