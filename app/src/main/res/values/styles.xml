@@ -9,6 +9,14 @@
     </style>
 
 
+    <style name="NewAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
     <style name="RobotoRegular_Blue_16">
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:textSize">16sp</item>

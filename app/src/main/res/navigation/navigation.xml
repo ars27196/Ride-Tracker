@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/logInFragment"
-        android:name="com.twointerns.ridetracker.view.fragment.LogInFragment"
+        android:name="com.twointerns.ridetracker.view.fragment.register.LogInFragment"
         android:label="LogInFragment" >
         <action
             android:id="@+id/action_logInFragment_to_registerFragment"
@@ -13,13 +13,20 @@
         <action
             android:id="@+id/action_logInFragment_to_recoverFragment"
             app:destination="@id/recoverFragment" />
+        <action
+            android:id="@+id/action_logInFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.twointerns.ridetracker.view.fragment.RegisterFragment"
+        android:name="com.twointerns.ridetracker.view.fragment.register.RegisterFragment"
         android:label="RegisterFragment" />
     <fragment
         android:id="@+id/recoverFragment"
-        android:name="com.twointerns.ridetracker.view.fragment.RecoverFragment"
+        android:name="com.twointerns.ridetracker.view.fragment.register.RecoverFragment"
         android:label="RecoverFragment" />
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.twointerns.ridetracker.view.activity.HomeActivity"
+        android:label="HomeActivity" />
 </navigation>

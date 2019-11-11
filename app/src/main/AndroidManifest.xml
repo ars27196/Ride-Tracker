@@ -9,13 +9,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.MainActivity">
+        <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyABisSGwdgHRDoZUwNoW3iTi0QFHRCRHTA"/>
+        <activity
+            android:name=".view.activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:parentActivityName=".view.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.twointerns.ridetracker.view.activity.MainActivity" />
+        </activity>
+        <activity android:name=".view.activity.MainActivity"
+            android:theme="@style/NewAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

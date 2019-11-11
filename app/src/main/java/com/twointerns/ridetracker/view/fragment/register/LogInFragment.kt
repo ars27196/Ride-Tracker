@@ -1,4 +1,4 @@
-package com.twointerns.ridetracker.view.fragment
+package com.twointerns.ridetracker.view.fragment.register
 
 import android.content.Context
 import android.graphics.Typeface
@@ -29,35 +29,12 @@ class LogInFragment : Fragment() {
     private lateinit var binding: FragmentLogInBinding
     private var dialog = ShowProgressAlert.newInstance()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_log_in, container, false)
-
-        binding.forgotPasswordLinkLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_logInFragment_to_recoverFragment)
-        }
-
-        binding.signUpLinkLogin.setOnClickListener {
-            findNavController().navigate(R.id.action_logInFragment_to_registerFragment)
-        }
-
-        // observing viewmodel state
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(LogInViewModel::class.java)
-        changePasswordHintFont(context!!)
-        binding.login = viewModel as LogInViewModel
-
         viewModel.success.observe(this, Observer {
-            if (it == true) {
-
-            } else {
-                OneButtonAlert.newInstance(
-                    "Invalid Email Id",
-                    "This Email is not registered",
-                    "Okay"
-                )
-                    .show(childFragmentManager, "")
+            if (it) {
+                findNavController().navigate(R.id.action_logInFragment_to_homeActivity)
             }
         })
         viewModel.failure.observe(this, Observer {
@@ -86,6 +63,31 @@ class LogInFragment : Fragment() {
                 dialog.dismiss()
             }
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_log_in, container, false)
+
+        binding.forgotPasswordLinkLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_logInFragment_to_recoverFragment)
+        }
+
+        binding.signUpLinkLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_logInFragment_to_registerFragment)
+        }
+
+        // observing viewmodel state
+        changePasswordHintFont(context!!)
+        binding.login = viewModel as LogInViewModel
+
+        binding.logoLogin.setOnClickListener {
+            binding.emailLogin.setText("ars27196@gmail.com")
+            binding.passwordLogin.setText("ars1234")
+        }
+
         return binding.root
     }
 

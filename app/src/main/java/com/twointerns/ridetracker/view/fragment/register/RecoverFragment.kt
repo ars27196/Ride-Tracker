@@ -1,4 +1,4 @@
-package com.twointerns.ridetracker.view.fragment
+package com.twointerns.ridetracker.view.fragment.register
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -22,14 +22,10 @@ class RecoverFragment : Fragment() {
 
     private lateinit var viewModel: RecoverViewModel
     private lateinit var binding: FragmentRecoverBinding
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recover, container, false)
-        viewModel = ViewModelProviders.of(this).get(RecoverViewModel::class.java)
-        binding.recover = viewModel as RecoverViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        viewModel = ViewModelProviders.of(this).get(RecoverViewModel::class.java)
+        super.onCreate(savedInstanceState)
         (viewModel as RecoverViewModel).error.observe(this, Observer {
             if (it != null) {
                 OneButtonAlert.newInstance("Invalid Entry", it, "Okay")
@@ -50,6 +46,16 @@ class RecoverFragment : Fragment() {
 
             }
         })
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recover, container, false)
+        binding.recover = viewModel as RecoverViewModel
+
+
         return binding.root
     }
 

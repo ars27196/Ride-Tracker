@@ -32,7 +32,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
     fun registerAccount(email: String?, password: String?) {
 
         _showDialog.value = true
-        if (!email.isNullOrEmpty() || !password.isNullOrEmpty()) {
+        if (!email.isNullOrEmpty() && !password.isNullOrEmpty()) {
 
             mAuth.createUserWithEmailAndPassword(email!!, password!!).addOnCompleteListener {
 

@@ -14,5 +14,10 @@
     <string name="register">register</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="please_wait">Please Wait</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="history">History</string>
 
 </resources>
