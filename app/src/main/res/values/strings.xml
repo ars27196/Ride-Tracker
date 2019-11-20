@@ -19,5 +19,15 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="history">History</string>
+    <string name="start_tracking">Start Tracking</string>
+    <string name="google_plus_title">Google Plus</string>
+    <string name="google_maps_title">Maps</string>
+    <string name="google_messenger_title">Messenger</string>
+    <string name="header_title">Header Title</string>
+    <string name="header_count">List Count</string>
+    <string name="tracker_id">Tracker Id</string>
+    <string name="list_of_location">List of Location</string>
+    <string name="start_location">Start Location</string>
+    <string name="end_location">End Location</string>
 
 </resources>

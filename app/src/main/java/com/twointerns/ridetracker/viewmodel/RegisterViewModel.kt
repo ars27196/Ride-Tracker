@@ -34,7 +34,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
         _showDialog.value = true
         if (!email.isNullOrEmpty() && !password.isNullOrEmpty()) {
 
-            mAuth.createUserWithEmailAndPassword(email!!, password!!).addOnCompleteListener {
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
 
                 if (it.isSuccessful) {
                     _showDialog.value = false
@@ -45,7 +45,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
                 .addOnFailureListener {
                     Log.d("viewmodel", "Exception: ${it}")
 
-                    _userAlreadyCreated.value = "${it.localizedMessage}"
+                    _userAlreadyCreated.value = it.localizedMessage
 
                 }
 

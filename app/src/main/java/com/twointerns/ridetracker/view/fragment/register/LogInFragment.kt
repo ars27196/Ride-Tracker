@@ -21,9 +21,6 @@ import com.twointerns.ridetracker.viewmodel.LogInViewModel
 
 class LogInFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = LogInFragment()
-    }
 
     private lateinit var viewModel: LogInViewModel
     private lateinit var binding: FragmentLogInBinding
@@ -56,7 +53,7 @@ class LogInFragment : Fragment() {
         viewModel.showDialog.observe(this, Observer {
             if (it) {
                 if (!dialog.isVisible) {
-                    dialog.show(childFragmentManager!!, "lol")
+                    dialog.show(childFragmentManager , "lol")
                 }
             } else {
 
@@ -81,7 +78,7 @@ class LogInFragment : Fragment() {
 
         // observing viewmodel state
         changePasswordHintFont(context!!)
-        binding.login = viewModel as LogInViewModel
+        binding.login = viewModel
 
         binding.logoLogin.setOnClickListener {
             binding.emailLogin.setText("ars27196@gmail.com")
@@ -98,24 +95,24 @@ class LogInFragment : Fragment() {
 
             if (binding.emailLogin.hasFocus()) {
                 val typeface: Typeface? =
-                    ResourcesCompat.getFont(context, R.font.roboto_bold);
+                    ResourcesCompat.getFont(context, R.font.roboto_bold)
                 binding.emailWrapLogin.typeface = typeface
 
             } else {
-                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular);
+                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular)
                 binding.emailWrapLogin.typeface = typeface
             }
         }
 
         binding.passwordLogin.setOnFocusChangeListener { _, _ ->
-            val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_bold);
+            val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_bold)
 
             if (binding.passwordLogin.hasFocus()) {
 
                 binding.passwordWrapLogin.typeface = typeface
 
             } else {
-                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular);
+                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular)
                 binding.passwordWrapLogin.typeface = typeface
             }
         }

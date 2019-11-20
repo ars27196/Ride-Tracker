@@ -30,7 +30,7 @@ class LogInViewModel : ViewModel() {
 
         if (!email.isNullOrEmpty()&& !password.isNullOrEmpty()) {
             _showDialog.value=true
-            mAuth.signInWithEmailAndPassword(email!!, password!!).addOnCompleteListener {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
 
                 if (it.isSuccessful ) {
                     Log.d("viewmodel", "success")
@@ -41,7 +41,7 @@ class LogInViewModel : ViewModel() {
                 }
             }
                 .addOnFailureListener{
-                    Log.d("viewmodel", "Exception: ${it}")
+                    Log.d("viewmodel", "Exception: $it")
                     _showDialog.value=false
                     _failure.value="${it.localizedMessage}"
 

@@ -22,10 +22,6 @@ import com.twointerns.ridetracker.viewmodel.RegisterViewModel
 
 class RegisterFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = RegisterFragment()
-    }
-
     private var dialog = ShowProgressAlert.newInstance()
     private lateinit var viewModel: RegisterViewModel
     private lateinit var binding: FragmentRegisterBinding
@@ -33,14 +29,14 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel::class.java)
-        (viewModel as RegisterViewModel).error.observe(this, Observer {
-            if (it.equals("show")) {
+        (viewModel).error.observe(this, Observer {
+            if (it == "show") {
                 OneButtonAlert.newInstance("Invalid Entry", "One or more fields are empty", "Okay")
                     .show(childFragmentManager, "")
 
             }
         })
-        (viewModel as RegisterViewModel).userAlreadyCreated.observe(this, Observer {
+        (viewModel).userAlreadyCreated.observe(this, Observer {
             if (it != null) {
                 OneButtonAlert.newInstance("Invalid Sign Up", it, "Okay")
                     .show(childFragmentManager, "")
@@ -51,7 +47,7 @@ class RegisterFragment : Fragment() {
         viewModel.showDialog.observe(this, Observer {
             if (it) {
                 if (!dialog.isVisible) {
-                    dialog.show(childFragmentManager!!, "lol")
+                    dialog.show(childFragmentManager, "lol")
                 }
             } else {
                 dialog.dismiss()
@@ -59,7 +55,7 @@ class RegisterFragment : Fragment() {
 
         })
 
-        (viewModel as RegisterViewModel).sucess.observe(this, Observer {
+        (viewModel ).sucess.observe(this, Observer {
             if (it) {
                 Toast.makeText(context,"User Registration Successful",Toast.LENGTH_LONG).show()
                 findNavController().popBackStack()
@@ -73,8 +69,7 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
-        binding.register = viewModel as RegisterViewModel
-        val myView = binding.root
+        binding.register = viewModel
         changePasswordHintFont(context!!)
 
 
@@ -90,24 +85,24 @@ class RegisterFragment : Fragment() {
 
             if (binding.emailRegister.hasFocus()) {
                 val typeface: Typeface? =
-                    ResourcesCompat.getFont(context, R.font.roboto_bold);
+                    ResourcesCompat.getFont(context, R.font.roboto_bold)
                 binding.emailWrapRegister.typeface = typeface
 
             } else {
-                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular);
+                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular)
                 binding.emailWrapRegister.typeface = typeface
             }
         }
 
         binding.passwordRegister.setOnFocusChangeListener { _, _ ->
-            val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_bold);
+            val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_bold)
 
             if (binding.passwordRegister.hasFocus()) {
 
                 binding.passwordWrapRegister.typeface = typeface
 
             } else {
-                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular);
+                val typeface: Typeface? = ResourcesCompat.getFont(context, R.font.roboto_regular)
                 binding.passwordWrapRegister.typeface = typeface
             }
         }

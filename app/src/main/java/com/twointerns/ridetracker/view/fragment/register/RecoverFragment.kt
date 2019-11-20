@@ -16,31 +16,27 @@ import com.twointerns.ridetracker.viewmodel.RecoverViewModel
 
 class RecoverFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = RecoverFragment()
-    }
-
     private lateinit var viewModel: RecoverViewModel
     private lateinit var binding: FragmentRecoverBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(RecoverViewModel::class.java)
         super.onCreate(savedInstanceState)
-        (viewModel as RecoverViewModel).error.observe(this, Observer {
+        viewModel.error.observe(this, Observer {
             if (it != null) {
                 OneButtonAlert.newInstance("Invalid Entry", it, "Okay")
                     .show(childFragmentManager, "")
             }
         })
 
-        (viewModel as RecoverViewModel).success.observe(this, Observer {
-            if (it.equals("shown")) {
+        viewModel.success.observe(this, Observer {
+            if (it == "shown") {
                 OneButtonAlert.newInstance("Success", "Recovery Link sent to the email Id", "Okay")
                     .show(childFragmentManager, "")
             }
         })
-        (viewModel as RecoverViewModel).empty.observe(this, Observer {
-            if (it.equals("shown")) {
+        viewModel.empty.observe(this, Observer {
+            if (it == "shown") {
                 OneButtonAlert.newInstance("Invalid Entry", "Email field is empty", "Okay")
                     .show(childFragmentManager, "")
 
@@ -53,7 +49,7 @@ class RecoverFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recover, container, false)
-        binding.recover = viewModel as RecoverViewModel
+        binding.recover = viewModel
 
 
         return binding.root
