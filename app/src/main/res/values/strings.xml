@@ -29,5 +29,10 @@
     <string name="list_of_location">List of Location</string>
     <string name="start_location">Start Location</string>
     <string name="end_location">End Location</string>
+    <string name="ride_history">Ride History</string>
+    <string name="ride_detail">Ride Detail</string>
+    <string name="menu_dots">⋮</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
 
 </resources>

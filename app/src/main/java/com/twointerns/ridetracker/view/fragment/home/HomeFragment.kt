@@ -1,7 +1,6 @@
 package com.twointerns.ridetracker.view.fragment.home
 
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -22,8 +21,6 @@ import com.twointerns.ridetracker.viewmodel.HomeViewModel
 import com.twointerns.ridetracker.utils.PermissionUtil
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.location.Address
-import android.util.Log
 import android.view.Gravity
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -33,13 +30,10 @@ import com.akexorcist.googledirection.GoogleDirection
 import com.akexorcist.googledirection.constant.RequestResult
 import com.akexorcist.googledirection.model.Direction
 import com.akexorcist.googledirection.util.DirectionConverter
-import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 
 import com.google.android.gms.maps.model.*
-import java.io.IOException
-import android.location.Geocoder as Geocoder1
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.LatLng
@@ -52,13 +46,14 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.ListHolder
-import com.twointerns.ridetracker.view.DialogListAdapter
+import com.twointerns.ridetracker.utils.GlobalUtils
+import com.twointerns.ridetracker.view.adapter.DialogListAdapter
+import kotlinx.android.synthetic.main.fragment_home.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
-    GoogleMap.OnMapClickListener {
+class HomeFragment : Fragment(), OnMapReadyCallback {
 
 
     private lateinit var mMap: GoogleMap
@@ -66,13 +61,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
     private lateinit var binding: FragmentHomeBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var lastLocation: Location
-    private var latLngList: ArrayList<LatLng> = ArrayList()
     private lateinit var markerOptions: MarkerOptions
     private lateinit var lastMarker: Marker
     private lateinit var currentLatLng: LatLng
     private lateinit var listOfNearbyPlaces: ArrayList<String>
     private lateinit var listOfNearbyPlacesLatLng: ArrayList<LatLng>
-    private var counter = 0
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -90,13 +83,15 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
 
         binding.viewModel = homeViewModel
-        binding.searchBar.clearFocus()
+//        binding.searchBar.clearFocus()
 //        binding.searchBar2.clearFocus()
         mapFragment.getMapAsync(this)
         val locationButton =
             (mapFragment.view?.findViewById<View>(Integer.parseInt("1"))?.parent as View).findViewById<View>(
                 Integer.parseInt("2")
             )
+
+        //rearranging the center at current location button
         val rlp = locationButton.layoutParams as RelativeLayout.LayoutParams
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
         rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
@@ -108,7 +103,19 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
              }
          }*/
-        setupAutoCompleteFragment()
+        setupEndAutoCompleteFragment()
+        setupStartAutoCompleteFragment()
+
+        binding.trafficImage.setOnClickListener {
+            if (GlobalUtils.trafficEnabled) {
+                mMap.isTrafficEnabled = false
+                GlobalUtils.trafficEnabled = false
+
+            } else {
+                mMap.isTrafficEnabled = true
+                GlobalUtils.trafficEnabled = true
+            }
+        }
         return binding.root
     }
 
@@ -170,22 +177,22 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
 
         if (PermissionUtil.isLocationPermissionGiven(activity!!)) {
             googleMap.isMyLocationEnabled = true
-            googleMap.isTrafficEnabled=true
-            fusedLocationClient.lastLocation.addOnSuccessListener {
-                if (it != null) {
-                    lastLocation = it
-                    currentLatLng = LatLng(it.latitude, it.longitude)
-//                    placeMarkerOnMap(currentLatLng)
-                    getCurrentPlace()
-                    latLngList.add(counter, currentLatLng)
-                    counter++
-
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
-                }
-            }
+            getCurrentLocation()
 
         } else {
             PermissionUtil.requestLocationPermission(this)
+        }
+    }
+
+    private fun getCurrentLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+            if (it != null) {
+                lastLocation = it
+                currentLatLng = LatLng(it.latitude, it.longitude)
+
+
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12f))
+            }
         }
     }
 
@@ -209,38 +216,41 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
                         listOfNearbyPlaces.add((placeLikelihood.place.name)!!)
                         listOfNearbyPlacesLatLng.add((placeLikelihood.place.latLng)!!)
                     }
-                    val arrayAdapter = ArrayAdapter(
-                        context!!,
-                        android.R.layout.simple_spinner_item,
-                        listOfNearbyPlaces
-                    )
-                    binding.searchBar.adapter = arrayAdapter
-                    binding.searchBar.onItemSelectedListener =
-                        object : AdapterView.OnItemSelectedListener,
-                            AdapterView.OnItemClickListener {
-                            override fun onItemSelected(
-                                parent: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-                                currentLatLng = listOfNearbyPlacesLatLng[position]
+//                    val arrayAdapter = ArrayAdapter(
+//                        context!!,
+//                        android.R.layout.simple_spinner_item,
+//                        listOfNearbyPlaces
+//                    )
+//
 
-                            }
 
-                            override fun onItemClick(
-                                parent: AdapterView<*>?,
-                                view: View?,
-                                position: Int,
-                                id: Long
-                            ) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                            }
+                    /* binding.searchBar.adapter = arrayAdapter
+                     binding.searchBar.onItemSelectedListener =
+                         object : AdapterView.OnItemSelectedListener,
+                             AdapterView.OnItemClickListener {
+                             override fun onItemSelected(
+                                 parent: AdapterView<*>?,
+                                 view: View?,
+                                 position: Int,
+                                 id: Long
+                             ) {
+                                 currentLatLng = listOfNearbyPlacesLatLng[position]
 
-                            override fun onNothingSelected(parent: AdapterView<*>?) {
-                                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                            }
-                        }
+                             }
+
+                             override fun onItemClick(
+                                 parent: AdapterView<*>?,
+                                 view: View?,
+                                 position: Int,
+                                 id: Long
+                             ) {
+                                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                             }
+
+                             override fun onNothingSelected(parent: AdapterView<*>?) {
+                                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                             }
+                         }*/
 
 
                 } else {
@@ -257,9 +267,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         }
     }
 
-    override fun onMarkerClick(p0: Marker?): Boolean {
-        return false
-    }
 
     private fun toast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
@@ -282,19 +289,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
 //        val value=titleStr
 //        markerOptions.title(titleStr)
         lastMarker = mMap.addMarker(markerOptions)
-
-    }
-
-
-    override fun onMapClick(latLng: LatLng?) {
-
-        latLngList.add(counter, latLng!!)
-        counter++
-
-        //lastMarker.remove()
-        placeMarkerOnMap(latLngList[latLngList.size - 1])
-        drawRoute(currentLatLng, latLng)
-
 
     }
 
@@ -335,9 +329,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
     }
 
 
-    private fun setupAutoCompleteFragment() {
+    private fun setupEndAutoCompleteFragment() {
         if (!Places.isInitialized()) {
-            Places.initialize(context!!, "AIzaSyABisSGwdgHRDoZUwNoW3iTi0QFHRCRHTA", Locale.US)
+            Places.initialize(context!!, GlobalUtils.ApiKey, Locale.US)
         }
         var fields = Arrays.asList(
             Place.Field.ID,
@@ -347,7 +341,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
         )
 
         val autocompleteFragment: AutocompleteSupportFragment =
-            childFragmentManager.findFragmentById(R.id.place_autocomplete_fragment) as AutocompleteSupportFragment
+            childFragmentManager.findFragmentById(R.id.place_end_autocomplete_fragment) as AutocompleteSupportFragment
         autocompleteFragment.setPlaceFields(fields)
         autocompleteFragment.setCountry("PAK")
 
@@ -371,12 +365,38 @@ class HomeFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMarkerClickList
             }
 
             override fun onError(status: Status) {
-                Toast.makeText(
-                    context!!, "failure: "
-                            + status.status, Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(context!!, "No Location Selected", Toast.LENGTH_LONG).show()
+
             }
         })
 
+    }
+
+    private fun setupStartAutoCompleteFragment() {
+        if (!Places.isInitialized()) {
+            Places.initialize(context!!, GlobalUtils.ApiKey, Locale.US)
+        }
+        var fields = Arrays.asList(
+            Place.Field.ID,
+            Place.Field.NAME,
+            Place.Field.LAT_LNG,
+            Place.Field.ADDRESS
+        )
+
+        val autocompleteFragment: AutocompleteSupportFragment =
+            childFragmentManager.findFragmentById(R.id.place_start_autocomplete_fragment) as AutocompleteSupportFragment
+        autocompleteFragment.setPlaceFields(fields)
+        autocompleteFragment.setCountry("PAK")
+
+        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                currentLatLng = place.latLng!!
+            }
+
+            override fun onError(p0: Status) {
+                Toast.makeText(context!!, "No Location Selected", Toast.LENGTH_LONG).show()
+                getCurrentLocation()
+            }
+        })
     }
 }

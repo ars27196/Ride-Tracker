@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <data>
 
@@ -8,9 +11,15 @@
             name="data"
             type="com.twointerns.ridetracker.model.entity.LocationData" />
     </data>
+<androidx.cardview.widget.CardView
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    app:cardElevation="4dp"
+    android:layout_marginBottom="6dp"
+
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,16 +31,28 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="@{data.rideId.toString()}"
+            android:text="@{`Tracker Id: `+data.rideId.toString()}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/option_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_dots"
+            android:textSize="16sp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_margin ="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <TextView
             android:id="@+id/start_location"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@{data.startLocationLatLng.toString()}"
+            android:text="@{data.lastLocationAddress}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tracker_id_item" />
 
@@ -40,14 +61,14 @@
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:text="@{data.lastLocationLatLng.toString()}"
+            android:text="@{data.startLocationAddress}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tracker_id_item" />
 
         <ImageView
             android:id="@+id/light_map"
             android:name="com.google.android.gms.maps.MapView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,5 +77,5 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
+</androidx.cardview.widget.CardView>
 </layout>

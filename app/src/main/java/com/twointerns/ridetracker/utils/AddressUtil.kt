@@ -11,21 +11,24 @@ import java.io.IOException
 
 class AddressUtil {
     companion object {
-        fun getAddress(context: Context, latLng: LatLng?): LiveData<String >{
+        suspend fun getAddress(context: Context, latLng: LatLng?): String? {
             val geoCoder = Geocoder(context)
             val addresses: List<Address>?
             val address: Address?
-            var addressText = MutableLiveData<String>()
+            var addressText :String ?= null
 
             try {
                 addresses = geoCoder.getFromLocation(latLng?.latitude!!, latLng.longitude, 1)
                 if (null != addresses && addresses.isNotEmpty()) {
                     address = addresses[0]
-                    for (i in 0 until address.maxAddressLineIndex) {
-                        addressText.value += if (i == 0) address.getAddressLine(i) else "\n"+
-                                address.getAddressLine(i)
-                    }
+                    addressText=address.getAddressLine(0)
+//                    for (i in 0 until address.maxAddressLineIndex) {
+//                        addressText += if (i == 0) address.getAddressLine(i) else "\n"+
+//                                address.getAddressLine(i)
+//                    }
                 }
+                Log.e("address", addressText)
+
             } catch (e: IOException) {
                 Log.e("address", e.localizedMessage)
             }

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.twointerns.ridetracker.model.entity.LocationData
 
-@Database(entities = arrayOf(LocationData::class), version = 1, exportSchema = false)
+@Database(entities = [LocationData::class], version = 1, exportSchema = false)
 abstract class LocationRoomDatabase :RoomDatabase(){
     abstract fun locationDao(): LocationDao
 

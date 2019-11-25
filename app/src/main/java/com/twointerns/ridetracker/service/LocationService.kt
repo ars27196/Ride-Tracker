@@ -15,8 +15,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.twointerns.ridetracker.R
 import com.twointerns.ridetracker.database.LocationRoomDatabase
 import com.twointerns.ridetracker.model.entity.LocationData
+import com.twointerns.ridetracker.utils.AddressUtil
 import com.twointerns.ridetracker.utils.GlobalUtils
 import com.twointerns.ridetracker.view.activity.HomeActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 class LocationService : Service() {
     private val FASTEST_INTERVAL: Long = 1000 * 10
@@ -26,6 +32,10 @@ class LocationService : Service() {
     private lateinit var locationData: LocationData
     private var listofLocations=ArrayList<LatLng>()
     private lateinit var rideTrackerId :String
+    private val rootJob = SupervisorJob()
+
+    val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + rootJob
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action?.equals(GlobalUtils.STARTFOREGROUND_ACTION)!!) {
@@ -58,9 +68,7 @@ class LocationService : Service() {
 
             startLocationUpdates()
 
-        } else if (intent.getAction().equals(
-                GlobalUtils.STOPFOREGROUND_ACTION
-            )
+        } else if (intent.action == GlobalUtils.STOPFOREGROUND_ACTION
         ) {
             stopLocationUpdates()
 
@@ -116,9 +124,16 @@ class LocationService : Service() {
                 Log.d("location","success")
 
                 locationData.latlngList=listofLocations
+                CoroutineScope(coroutineContext).launch {
+
                 LocationRoomDatabase.getDatabase(applicationContext).locationDao().insert(locationData)
+                val startAddress=AddressUtil.getAddress(applicationContext,listofLocations.first())
+                val stopAddress=AddressUtil.getAddress(applicationContext,listofLocations.last())
+                LocationRoomDatabase.getDatabase(applicationContext).locationDao().updateStartAddress(startAddress,locationData.rideId!!)
+                LocationRoomDatabase.getDatabase(applicationContext).locationDao().updateStopAddress(stopAddress,locationData.rideId!!)
                 stopForeground(true)
                 stopSelf()
+                }
             }else{
                 Toast.makeText(
                     applicationContext,

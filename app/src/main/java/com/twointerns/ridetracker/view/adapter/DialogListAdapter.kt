@@ -1,4 +1,4 @@
-package com.twointerns.ridetracker.view
+package com.twointerns.ridetracker.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

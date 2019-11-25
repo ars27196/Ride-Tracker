@@ -11,6 +11,7 @@ class GlobalUtils {
        val STOPFOREGROUND_ACTION = "com.twointerns.ridetracker.action.stopforeground"
        val SERVICE_STARTED_KEY="SERVICE_STARTED"
        val SERVICE_BUTTON_KEY="SERVICE_STARTED"
+       var trafficEnabled=false
    }
     internal interface NOTIFICATION_ID {
         companion object {

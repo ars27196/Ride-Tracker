@@ -9,4 +9,6 @@
     <color name="white">#ffffff</color>
     <color name="transparent">#ADFFFFFF</color>
     <color name="coral">#EC2727</color>
+    <color name="green">#4CAF50</color>
+    <color name="slight_transparent_white">#7FFFFFFF</color>
 </resources>
